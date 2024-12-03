@@ -13,6 +13,7 @@
 #define FX_LOGFILE "custom-fx.log"
 #define CUSTOM_FX_DIR "custom_fx"
 #define FX_FILE_EXT ".efx"
+#define CUSTOM_FX_HASH ""
 
 #include <windows.h>
 #include <filesystem>
@@ -20,6 +21,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <functional>
+#include <sstream>
+#include <iomanip>
+#include <stdexcept>
 
 #include "structs.h"
 #include "functions.h"

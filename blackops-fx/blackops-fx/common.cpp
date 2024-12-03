@@ -74,16 +74,26 @@ namespace common {
 		zoneInfo[zoneCount].name = mapName;
 		zoneInfo[zoneCount++].freeFlags = 0;
 
-		// add custom_fx.ff to the list, remember to check the bytes size for this later
-		char customMapFxFastFile[64];
-		sprintf_s(customMapFxFastFile, "%s_custom_fx", mapName);
-		zoneInfo[zoneCount].name = customMapFxFastFile;
-		zoneInfo[zoneCount].allocFlags = 0x4000000;
-		zoneInfo[zoneCount++].freeFlags = 0;
+		// load custom_fx.ff, remember to check the bytes size for this later
+		Com_LoadCustomFXFastFile();
 
 		R_BeginRemoteScreenUpdate();
 		DB_LoadXAssets(zoneInfo, zoneCount, 0);
 		R_EndRemoteScreenUpdate(nullptr);
+	}
+
+	void Com_LoadCustomFXFastFile()
+	{
+		XZoneInfo zoneInfo[2];
+		int zoneCount = 0;
+
+		DB_ResetZoneSize(0);
+
+		zoneInfo[zoneCount].name = "custom_fx";
+		zoneInfo[zoneCount].allocFlags = 0x4000000;
+		zoneInfo[zoneCount++].freeFlags = 0;
+
+		DB_LoadXAssets(zoneInfo, zoneCount, 0);
 	}
 
 	void Com_LoadCommonFastFile()
