@@ -2,6 +2,7 @@
 
 #include "debug.hpp"
 #include "fx-files.hpp"
+#include "common.hpp"
 
 void CustomFX_Init(int game)
 {
@@ -40,6 +41,7 @@ void CustomFX_Init(int game)
     // gather up the fx files and compile them into custom_fx.ff, store the size of custom_fx.ff in bytes
 
     // patch the bo1 memory and make it load custom_fx.ff but only if it's size in bytes matches the previously stored size.
+    Detours::X86::DetourFunction((uintptr_t)0x004C8890, (uintptr_t)&common::Com_LoadLevelFastFiles);
 }
 
 extern "C" __declspec(dllexport) int Patchbgt5external(int game) {
