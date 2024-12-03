@@ -1,23 +1,40 @@
 #include "pch.h"
 
-#define DEBUG 1
-#define CUSTOM_FX_DIR "custom_fx"
+#include "debug.hpp"
+#include "fx-files.hpp"
 
 void CustomFX_Init(int game)
 {
-#if DEBUG
-    std::thread{ MessageBoxA, NULL, "Welcome to Custom-FX!", "blackops-fx", MB_OK }.detach();
-#endif
-
     // Make sure we're on BlackOps.exe and not BlackOpsMP.exe
     if (game != 1)
+    {
+#if DEBUG
+        std::thread{ debug::Msg, "Custom-FX only works on SP/ZM." }.detach();
+#endif
+        return;
+    }
+
+    // if the custom fx folder doesnt exist already, create it
+    if (!std::filesystem::exists(CUSTOM_FX_DIR))
+    {
+        std::filesystem::create_directory(CUSTOM_FX_DIR);
+    }
+
+    int amount_of_fx = fx::GetAmountOfFxFiles();
+
+    // log the amount of fx files to the logfile
+    std::string fx_count_msg = "Total fx files: " + std::to_string(amount_of_fx);
+    std::thread{ debug::Log, fx_count_msg.c_str() }.detach();
+
+    // premature checks so we don't do extra work
+    if (amount_of_fx == 0)
     {
         return;
     }
 
-    if (!std::filesystem::exists(CUSTOM_FX_DIR))
+    if (fx::DoNonFxFilesExist())
     {
-        std::filesystem::create_directory(CUSTOM_FX_DIR);
+        return;
     }
 
     // gather up the fx files and compile them into custom_fx.ff, store the size of custom_fx.ff in bytes
