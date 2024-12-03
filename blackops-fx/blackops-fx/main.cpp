@@ -20,9 +20,7 @@ void CustomFX_Init(int game)
         std::filesystem::create_directory(CUSTOM_FX_DIR);
     }
 
-    // gather up the fx files, ignore all scripts, put it into a zone project
-
-    // compile the fx files into custom_fx.ff, store the size of it in bytes
+    // gather up the fx files and compile them into custom_fx.ff, store the size of custom_fx.ff in bytes
 
     // patch the bo1 memory and make it load custom_fx.ff but only if it's size in bytes matches the previously stored size.
 }
