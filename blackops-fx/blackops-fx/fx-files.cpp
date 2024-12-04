@@ -32,31 +32,26 @@ namespace fx {
 	{
 		std::ifstream file("zone\\Common\\custom_fx.ff", std::ios::binary);
 
-		if (!file)
-		{
-			return "theres no file to hash";
+		if (!file) {
+			return "";
 		}
 
-		std::size_t basis = 0xCBF29CE484222325;
-		std::size_t prime = 0x100000001B3;
+		file.seekg(0, std::ios::end);
+		long length = file.tellg();
+		file.seekg(0, std::ios::beg);
 
-		std::size_t hash = basis;
-		char buffer[8192];
-
-		while (file.read(buffer, sizeof(buffer))) {
-			for (std::streamsize i = 0; i < file.gcount(); ++i) {
-				hash ^= static_cast<unsigned char>(buffer[i]);
-				hash *= prime;
-			}
+		if (length <= 0) {
+			return "";
 		}
 
-		for (std::streamsize i = 0; i < file.gcount(); ++i) {
-			hash ^= static_cast<unsigned char>(buffer[i]);
-			hash *= prime;
+		std::vector<char> fileData(length);
+		file.read(fileData.data(), length);
+
+		if (!file) {
+			return "";
 		}
 
-		std::ostringstream oss;
-		oss << std::hex << std::setw(16) << std::setfill('0') << hash;
-		return oss.str();
+		std::string hash = md5(fileData.data(), length);
+		return hash.c_str();
 	}
 }

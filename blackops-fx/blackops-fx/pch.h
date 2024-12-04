@@ -25,6 +25,8 @@
 #include <stdexcept>
 #include <iostream>
 
+#include "md5.h"
+
 #include "structs.h"
 #include "functions.h"
 
