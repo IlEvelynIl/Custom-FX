@@ -91,30 +91,7 @@ namespace linker {
             }
         }
 
-        // Wait for files to be completely moved
-        auto wait_for_files = [](const std::string& target_dir) {
-            bool changes_detected = true;
-
-            while (changes_detected)
-            {
-                changes_detected = false;
-                try {
-                    for (const auto& entry : fs::directory_iterator(target_dir))
-                    {
-                        // Just iterating ensures the directory is stable
-                    }
-                }
-                catch (...) {
-                    changes_detected = true;
-                }
-                if (changes_detected)
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            }
-            };
-
-        wait_for_files(mod_dir + "/fx");
-        wait_for_files("custom_fx/linker/raw/images");
-
+        // "custom_fx/linker/bin/launcher_ldr.exe" "custom_fx/linker/bin/linker_pc.dll" "custom_fx/linker/bin/linker_pc.exe" -nopause -language english -moddir custom_fx mod
         std::string cmd = "\"custom_fx/linker/bin/launcher_ldr.exe\" \"custom_fx/linker/bin/linker_pc.dll\" \"custom_fx/linker/bin/linker_pc.exe\" -nopause -language english -moddir custom_fx mod";
         return process::LaunchProcess(cmd);
     }
