@@ -7,25 +7,15 @@ namespace fx {
 
 	int GetAmountOfFxFiles()
 	{
+		std::string dir = FX_FILES_DIR;
 		int fx_files = 0;
-		for (const auto& entry : fs::recursive_directory_iterator(FX_FILES_DIR)) {
+		for (const auto& entry : fs::recursive_directory_iterator(dir + "\\fx")) {
 			if (entry.is_regular_file() && entry.path().extension() == FX_FILE_EXT) {
 				++fx_files;
 			}
 		}
 
 		return fx_files;
-	}
-
-	bool DoNonFxFilesExist()
-	{
-		for (const auto& entry : fs::recursive_directory_iterator(FX_FILES_DIR)) {
-			if (entry.is_regular_file() && entry.path().extension() != FX_FILE_EXT) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	std::string hashFxFile()

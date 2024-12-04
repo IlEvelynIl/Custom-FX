@@ -45,19 +45,15 @@ void CustomFX_Init(int game)
         return;
     }
 
-    // make sure we dont have any non .efx files
-    if (fx::DoNonFxFilesExist())
-    {
-        return;
-    }
-
     if (!linker::PrepModCSV())
     {
+        MessageBoxA(NULL, "An error occurred with linking the custom fx (1)", "Custom-FX", MB_OK | MB_ICONERROR);
         return;
     }
 
     if (!linker::LinkCustomFX())
     {
+        MessageBoxA(NULL, "An error occurred with linking the custom fx (2)", "Custom-FX", MB_OK | MB_ICONERROR);
         return;
     }
 

@@ -13,10 +13,12 @@ namespace linker {
         std::string linker_dir = LINKER_DIR;
         std::string mod_dir = linker_dir + "\\mods\\custom_fx";
         std::string zone_source = ZONE_SOURCE_DIR;
+        std::string images_dir = fx_files_dir + "\\images";
 
         // Ensure directories exist
         fs::create_directories(zone_source);
         fs::create_directories(mod_dir);
+        fs::create_directories(images_dir);
 
         std::string mod_csv_path = mod_dir + "\\mod.csv";
 
@@ -25,8 +27,8 @@ namespace linker {
             return false;
         }
 
-        // Recursively iterate through `fx_files_dir` for all files
-        for (const auto& entry : fs::recursive_directory_iterator(fx_files_dir)) {
+        // Recursively iterate through `fx_files_dir/fx` for all files
+        for (const auto& entry : fs::recursive_directory_iterator(fx_files_dir + "\\fx")) {
             if (entry.is_regular_file()) {
                 std::string file_path = entry.path().string();
                 
@@ -70,14 +72,50 @@ namespace linker {
         std::string mod_dir = "custom_fx\\linker\\mods\\custom_fx";
 
         // Copy files over
-        try {
-            fs::copy(fx_files_dir + "/fx", mod_dir + "/fx", fs::copy_options::recursive | fs::copy_options::overwrite_existing);
-        }
-        catch (std::exception& e) {
-            return false;
+
+        if (fs::exists(fx_files_dir + "/fx"))
+        {
+            try {
+                fs::copy(fx_files_dir + "/fx", mod_dir + "/fx", fs::copy_options::recursive | fs::copy_options::overwrite_existing);
+            }
+            catch (std::exception& e) {
+            }
         }
 
-        std::string cmd = "custom_fx/linker/bin/launcher_ldr.exe custom_fx/linker/bin/linker_pc.dll custom_fx/linker/bin/linker_pc.exe -nopause -language english -moddir custom_fx mod";
+        if (fs::exists(fx_files_dir + "/images"))
+        {
+            try {
+                fs::copy(fx_files_dir + "/images", "custom_fx/linker/raw/images", fs::copy_options::recursive | fs::copy_options::overwrite_existing);
+            }
+            catch (std::exception& e) {
+            }
+        }
+
+        // Wait for files to be completely moved
+        auto wait_for_files = [](const std::string& target_dir) {
+            bool changes_detected = true;
+
+            while (changes_detected)
+            {
+                changes_detected = false;
+                try {
+                    for (const auto& entry : fs::directory_iterator(target_dir))
+                    {
+                        // Just iterating ensures the directory is stable
+                    }
+                }
+                catch (...) {
+                    changes_detected = true;
+                }
+                if (changes_detected)
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            }
+            };
+
+        wait_for_files(mod_dir + "/fx");
+        wait_for_files("custom_fx/linker/raw/images");
+
+        std::string cmd = "\"custom_fx/linker/bin/launcher_ldr.exe\" \"custom_fx/linker/bin/linker_pc.dll\" \"custom_fx/linker/bin/linker_pc.exe\" -nopause -language english -moddir custom_fx mod";
         return process::LaunchProcess(cmd);
     }
 
