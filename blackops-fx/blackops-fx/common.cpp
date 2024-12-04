@@ -82,7 +82,6 @@ namespace common {
 		if (customFxHash == linker::custom_fx_hash)
 		{
 			Com_LoadCustomFXFastFile();
-			std::thread{ debug::Log, "loading custom_fx.ff" }.detach();
 		}
 
 		R_BeginRemoteScreenUpdate();
