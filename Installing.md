@@ -2,6 +2,7 @@
 1. Head to [Releases](https://github.com/IlEvelynIl/Custom-FX/releases) and grab the latest version's `custom-fx.zip` file.
 
 1. Extract `custom-fx.zip` into the root of your BGamer folder.
+    - Make sure you have BGamer v0.7 installed, this may not work on older versions.
 
 1. Extract all `.iwi` files from the `main` folder of your game into `custom_fx/linker/raw/images`, this is required for most fx files to work.
     - Alternatively, you can only extract the ones that your fx files depend on, however I recommend extracting all of them for beginners.
