@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "debug.hpp"
 
 namespace process {
@@ -28,8 +27,8 @@ namespace process {
             &si,            // Pointer to STARTUPINFO structure
             &pi             // Pointer to PROCESS_INFORMATION structure
         )) {
-            std::string error = "Error linking custom_fx.ff: " + std::to_string(GetLastError());
-            std::thread{ debug::Log, error }.detach();
+            std::string error = "Failed to start linker process: " + std::to_string(GetLastError());
+            std::thread{ debug::Log, error.c_str() }.detach();
             return false;
         }
 

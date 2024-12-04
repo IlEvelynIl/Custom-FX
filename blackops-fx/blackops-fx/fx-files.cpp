@@ -7,12 +7,18 @@ namespace fx {
 
 	int GetAmountOfFxFiles()
 	{
-		std::string dir = FX_FILES_DIR;
 		int fx_files = 0;
-		for (const auto& entry : fs::recursive_directory_iterator(dir + "\\fx")) {
-			if (entry.is_regular_file() && entry.path().extension() == FX_FILE_EXT) {
-				++fx_files;
+
+		try {
+			for (const auto& entry : fs::recursive_directory_iterator(FX_DIR)) {
+				if (entry.is_regular_file() && entry.path().extension() == FX_FILE_EXT) {
+					++fx_files;
+				}
 			}
+		}
+		catch (std::exception e)
+		{
+			return 0;
 		}
 
 		return fx_files;

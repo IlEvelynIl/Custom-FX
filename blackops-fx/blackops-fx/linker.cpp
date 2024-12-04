@@ -2,6 +2,7 @@
 
 #include "linker.hpp"
 #include "process.hpp"
+#include "debug.hpp"
 
 namespace linker {
 	namespace fs = std::filesystem;
@@ -9,16 +10,14 @@ namespace linker {
 
     bool PrepModCSV()
     {
-        std::string fx_files_dir = FX_FILES_DIR;
+        std::string fx_files_dir = FX_DIR;
         std::string linker_dir = LINKER_DIR;
-        std::string mod_dir = linker_dir + "\\mods\\custom_fx";
         std::string zone_source = ZONE_SOURCE_DIR;
-        std::string images_dir = fx_files_dir + "\\images";
+        std::string mod_dir = linker_dir + "\\mods\\custom_fx";
 
         // Ensure directories exist
         fs::create_directories(zone_source);
         fs::create_directories(mod_dir);
-        fs::create_directories(images_dir);
 
         std::string mod_csv_path = mod_dir + "\\mod.csv";
 
@@ -27,27 +26,33 @@ namespace linker {
             return false;
         }
 
-        // Recursively iterate through `fx_files_dir/fx` for all files
-        for (const auto& entry : fs::recursive_directory_iterator(fx_files_dir + "\\fx")) {
-            if (entry.is_regular_file()) {
-                std::string file_path = entry.path().string();
-                
-                // use "/" instead of "\\"
-                std::replace(file_path.begin(), file_path.end(), '\\', '/');
+        try {
+            // Recursively iterate through `fx_files_dir/fx` for all files
+            for (const auto& entry : fs::recursive_directory_iterator(fx_files_dir)) {
+                if (entry.is_regular_file()) {
+                    std::string file_path = entry.path().string();
 
-                std::string relative_path = file_path.substr(fx_files_dir.length() + 1);
+                    // use "/" instead of "\\"
+                    std::replace(file_path.begin(), file_path.end(), '\\', '/');
 
-                if (relative_path.compare(0, 3, "fx/") == 0) { // Check if the first 3 characters are "fx/"
-                    relative_path = relative_path.substr(3);
+                    std::string relative_path = file_path.substr(fx_files_dir.length() + 1);
+
+                    if (relative_path.compare(0, 3, "fx/") == 0) { // Check if the first 3 characters are "fx/"
+                        relative_path = relative_path.substr(3);
+                    }
+
+                    // Remove `.efx`
+                    if (relative_path.size() > 4 && relative_path.substr(relative_path.size() - 4) == ".efx") {
+                        relative_path = relative_path.substr(0, relative_path.size() - 4);
+                    }
+
+                    mod_csv << "fx," << relative_path << "\n";
                 }
-
-                // Remove `.efx`
-                if (relative_path.size() > 4 && relative_path.substr(relative_path.size() - 4) == ".efx") {
-                    relative_path = relative_path.substr(0, relative_path.size() - 4);
-                }
-
-                mod_csv << "fx," << relative_path << "\n";
             }
+        }
+        catch (std::exception& e) {
+            std::thread{ debug::Log, "Failed to generate custom fx csv" }.detach();
+            return false;
         }
 
         mod_csv.close();
@@ -59,6 +64,7 @@ namespace linker {
             fs::copy(mod_csv_path, zone_source_csv_path, fs::copy_options::overwrite_existing);
         }
         catch (std::exception& e) {
+            std::thread{ debug::Log, "Failed to copy custom fx csv to zone_source" }.detach();
             return false;
         }
 
@@ -79,6 +85,7 @@ namespace linker {
                 fs::copy(fx_files_dir + "/fx", mod_dir + "/fx", fs::copy_options::recursive | fs::copy_options::overwrite_existing);
             }
             catch (std::exception& e) {
+                std::thread{ debug::Log, "Failed to copy fx folder" }.detach();
             }
         }
 
@@ -88,6 +95,7 @@ namespace linker {
                 fs::copy(fx_files_dir + "/images", "custom_fx/linker/raw/images", fs::copy_options::recursive | fs::copy_options::overwrite_existing);
             }
             catch (std::exception& e) {
+                std::thread{ debug::Log, "Failed to copy images folder" }.detach();
             }
         }
 
