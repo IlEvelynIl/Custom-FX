@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "debug.hpp"
+
 namespace process {
 	bool LaunchProcess(std::string& cmd)
 	{
@@ -26,7 +28,8 @@ namespace process {
             &si,            // Pointer to STARTUPINFO structure
             &pi             // Pointer to PROCESS_INFORMATION structure
         )) {
-            MessageBoxA(NULL, cmd.c_str(), "Custom-FX", MB_OK | MB_ICONERROR);
+            std::string error = "Error linking custom_fx.ff: " + std::to_string(GetLastError());
+            std::thread{ debug::Log, error }.detach();
             return false;
         }
 

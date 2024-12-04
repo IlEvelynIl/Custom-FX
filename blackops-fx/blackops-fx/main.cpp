@@ -19,19 +19,22 @@ void CustomFX_Init(int game)
     // if they've deleted the fx folder, just return, since theres no files there
     if (!std::filesystem::exists(CUSTOM_FX_DIR))
     {
-        return;
+        std::filesystem::create_directories(CUSTOM_FX_DIR);
+        std::thread{ debug::Log, "Created CUSTOM_FX_DIR" }.detach();
     }
 
     // same for linker
     if (!std::filesystem::exists(LINKER_DIR))
     {
-        return;
+        std::filesystem::create_directories(LINKER_DIR);
+        std::thread{ debug::Log, "Created LINKER_DIR" }.detach();
     }
 
     // now if the custom fx files dir doesnt exist, create it
     if (!std::filesystem::exists(FX_FILES_DIR))
     {
         std::filesystem::create_directories(FX_FILES_DIR);
+        std::thread{ debug::Log, "Created FX_FILES_DIR" }.detach();
     }
 
     // log the amount of fx files to the logfile
@@ -47,18 +50,21 @@ void CustomFX_Init(int game)
 
     if (!linker::PrepModCSV())
     {
-        MessageBoxA(NULL, "An error occurred with linking the custom fx (1)", "Custom-FX", MB_OK | MB_ICONERROR);
+        std::thread{ debug::Log, "An error occurred with linking the custom fx (1)" }.detach();
         return;
     }
 
     if (!linker::LinkCustomFX())
     {
-        MessageBoxA(NULL, "An error occurred with linking the custom fx (2)", "Custom-FX", MB_OK | MB_ICONERROR);
+        std::thread{ debug::Log, "An error occurred with linking the custom fx (2)" }.detach();
         return;
     }
 
     linker::MoveCustomFXFastFile();
+    std::thread{ debug::Log, "Moved custom_fx.ff to zone/Common" }.detach();
+
     linker::custom_fx_hash = fx::hashFxFile();
+    std::thread{ debug::Log, "Hashed custom_fx.ff" }.detach();
     
     // patch the bo1 memory and make it load custom_fx.ff but only if it's size in bytes matches the previously stored size.
     Detours::X86::DetourFunction((uintptr_t)0x004C8890, (uintptr_t)&common::Com_LoadLevelFastFiles);

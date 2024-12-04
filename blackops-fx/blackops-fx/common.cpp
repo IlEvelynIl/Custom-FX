@@ -2,6 +2,7 @@
 
 #include "common.hpp"
 #include "fx-files.hpp"
+#include "debug.hpp"
 #include "linker.hpp"
 
 namespace common {
@@ -81,6 +82,10 @@ namespace common {
 		if (customFxHash == linker::custom_fx_hash)
 		{
 			Com_LoadCustomFXFastFile();
+			std::thread{ debug::Log, "Loading custom_fx.ff" }.detach();
+		}
+		else {
+			std::thread{ debug::Log, "Not loading custom_fx.ff due to modification" }.detach();
 		}
 
 		R_BeginRemoteScreenUpdate();

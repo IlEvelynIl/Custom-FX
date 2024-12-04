@@ -1,4 +1,4 @@
 namespace debug {
-	void Log(const char* msg);
+	void Log(std::string msg);
 	void Msg(const char* msg);
 }
