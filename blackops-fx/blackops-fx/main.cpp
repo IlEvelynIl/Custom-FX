@@ -3,6 +3,7 @@
 #include "debug.hpp"
 #include "fx-files.hpp"
 #include "common.hpp"
+#include "linker.hpp"
 
 void CustomFX_Init(int game)
 {
@@ -15,15 +16,26 @@ void CustomFX_Init(int game)
         return;
     }
 
-    // if the custom fx folder doesnt exist already, create it
+    // if they've deleted the fx folder, just return, since theres no files there
     if (!std::filesystem::exists(CUSTOM_FX_DIR))
     {
-        std::filesystem::create_directory(CUSTOM_FX_DIR);
+        return;
     }
 
-    int amount_of_fx = fx::GetAmountOfFxFiles();
+    // same for linker
+    if (!std::filesystem::exists(LINKER_DIR))
+    {
+        return;
+    }
+
+    // now if the custom fx files dir doesnt exist, create it
+    if (!std::filesystem::exists(FX_FILES_DIR))
+    {
+        std::filesystem::create_directories(FX_FILES_DIR);
+    }
 
     // log the amount of fx files to the logfile
+    int amount_of_fx = fx::GetAmountOfFxFiles();
     std::string fx_count_msg = "Total fx files: " + std::to_string(amount_of_fx);
     std::thread{ debug::Log, fx_count_msg.c_str() }.detach();
 
@@ -33,18 +45,25 @@ void CustomFX_Init(int game)
         return;
     }
 
+    // make sure we dont have any non .efx files
     if (fx::DoNonFxFilesExist())
     {
         return;
     }
 
-    // gather up the fx files and compile them into custom_fx.ff, store the md5 of custom_fx.ff
+    if (!linker::PrepModCSV())
+    {
+        return;
+    }
 
-#define CUSTOM_FX_HASH fx::hashFxFile();
+    if (!linker::LinkCustomFX())
+    {
+        return;
+    }
 
-    std::string hash_msg = "custom_fx.ff hash: " + CUSTOM_FX_HASH;
-    debug::Log(hash_msg.c_str());
-
+    linker::MoveCustomFXFastFile();
+    linker::custom_fx_hash = fx::hashFxFile();
+    
     // patch the bo1 memory and make it load custom_fx.ff but only if it's size in bytes matches the previously stored size.
     Detours::X86::DetourFunction((uintptr_t)0x004C8890, (uintptr_t)&common::Com_LoadLevelFastFiles);
 }

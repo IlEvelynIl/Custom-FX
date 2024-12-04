@@ -8,7 +8,7 @@ namespace fx {
 	int GetAmountOfFxFiles()
 	{
 		int fx_files = 0;
-		for (const auto& entry : fs::recursive_directory_iterator(CUSTOM_FX_DIR)) {
+		for (const auto& entry : fs::recursive_directory_iterator(FX_FILES_DIR)) {
 			if (entry.is_regular_file() && entry.path().extension() == FX_FILE_EXT) {
 				++fx_files;
 			}
@@ -19,7 +19,7 @@ namespace fx {
 
 	bool DoNonFxFilesExist()
 	{
-		for (const auto& entry : fs::recursive_directory_iterator(CUSTOM_FX_DIR)) {
+		for (const auto& entry : fs::recursive_directory_iterator(FX_FILES_DIR)) {
 			if (entry.is_regular_file() && entry.path().extension() != FX_FILE_EXT) {
 				return true;
 			}
@@ -34,7 +34,7 @@ namespace fx {
 
 		if (!file)
 		{
-			throw std::runtime_error("Could not open file.");
+			return "theres no file to hash";
 		}
 
 		std::size_t basis = 0xCBF29CE484222325;

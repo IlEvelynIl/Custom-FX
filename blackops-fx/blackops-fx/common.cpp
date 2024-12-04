@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "common.hpp"
+#include "fx-files.hpp"
+#include "linker.hpp"
 
 namespace common {
 	std::vector<LevelDependency> g_LevelDependencies;
@@ -74,8 +76,12 @@ namespace common {
 		zoneInfo[zoneCount].name = mapName;
 		zoneInfo[zoneCount++].freeFlags = 0;
 
-		// load custom_fx.ff, remember to check the bytes size for this later
-		Com_LoadCustomFXFastFile();
+		// load custom_fx.ff if its not been modified
+		std::string customFxHash = fx::hashFxFile();
+		if (customFxHash == linker::custom_fx_hash)
+		{
+			Com_LoadCustomFXFastFile();
+		}
 
 		R_BeginRemoteScreenUpdate();
 		DB_LoadXAssets(zoneInfo, zoneCount, 0);

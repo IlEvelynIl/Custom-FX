@@ -158,13 +158,16 @@
     <ClInclude Include="common.hpp" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="fx-files.hpp" />
+    <ClInclude Include="linker.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="debug.hpp" />
+    <ClInclude Include="process.hpp" />
     <ClInclude Include="structs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common.cpp" />
     <ClCompile Include="fx-files.cpp" />
+    <ClCompile Include="linker.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -173,6 +176,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="process.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
