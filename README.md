@@ -6,8 +6,9 @@ FX files define how certain things appear in the game, such as the Thundergun am
 ## Installing
 1. Head to [Releases](https://github.com/IlEvelynIl/Custom-FX/releases) and grab the latest version's `custom-fx.zip` file.
 
-1. Extract `custom-fx.zip` into the root of your BGamer folder.
-    - Make sure you have [BGamer v0.7 w/ BGamerT5.exe from Alpha v0.1](https://drive.google.com/drive/folders/1ETheN_7cJGeOpEKT2ASbIRPYBshtWLG8) installed.
+1. Extract `custom-fx.zip` into the root of your BGamer folder. This does not work on Steam as of now.
+    - Make sure you have [BGamer Alpha v0.1](https://www.youtube.com/watch?v=PIt-k03CA4A) installed.
+    - Install [BGamer v0.7](https://cabconmodding.com/threads/call-of-duty-black-ops-1-bgamer-t5-lan-offline-client-v0-7.6446/) on top of Alpha v0.1, this is important for this tool to work.
 
 1. Get some custom fx files, these can be found in places such as [Reealithy's Patch Station](https://www.youtube.com/watch?v=da5s8PwkGZM).
 
