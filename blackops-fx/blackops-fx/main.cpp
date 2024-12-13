@@ -24,18 +24,14 @@ BOOL CustomFX_Init()
         fs::remove("zone\\Common\\custom_fx.ff");
     }
 
-    // the folder doesnt exist anymore
     if (!fs::exists(CUSTOM_FX_DIR))
     {
-        std::thread{ debug::Log, "\"custom_fx\" doesnt exist, aborting." }.detach();
-        return TRUE;
+        fs::create_directories(CUSTOM_FX_DIR);
     }
 
-    // if raw doesnt exist we can't compile the fx files
     if (!fs::exists(LINKER_RAW))
     {
-        std::thread{ debug::Log, "\"raw\" doesnt exist, aborting." }.detach();
-        return TRUE;
+        fs::create_directories(LINKER_RAW);
     }
 
     if (!fs::exists(FX_FILES_DIR))
