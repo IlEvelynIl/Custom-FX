@@ -4,11 +4,14 @@
 #include "common.hpp"
 #include "linker.hpp"
 #include "debug.hpp"
+#include "ceg.hpp"
 
 namespace fs = std::filesystem;
 
 BOOL CustomFX_Init()
 {
+    ceg::Patch_CEG();
+
     // remove old custom-fx.log
     if (fs::exists(FX_LOGFILE))
     {
