@@ -77,7 +77,6 @@ BOOL CustomFX_Init()
         std::thread{ debug::Log, "custom_fx.ff didnt exist" }.detach();
         return FALSE;
     }
-    std::thread{ debug::Log, "custom_fx.ff hash: " + linker::custom_fx_hash }.detach();
 
     linker::MoveCustomFXFastFile();
     std::thread{ debug::Log, "Moved custom fx to zone/Common" }.detach();
