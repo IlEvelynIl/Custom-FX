@@ -34,6 +34,11 @@ BOOL CustomFX_Init()
         fs::create_directories(LINKER_RAW);
     }
 
+    if (!fs::exists(FX_MOD_DIR))
+    {
+        fs::create_directories(FX_MOD_DIR);
+    }
+
     if (!fs::exists(FX_FILES_DIR))
     {
         fs::create_directories(FX_FILES_DIR);
@@ -42,11 +47,6 @@ BOOL CustomFX_Init()
     if (!fs::exists(FX_DIR))
     {
         fs::create_directories(FX_DIR);
-    }
-
-    if (!fs::exists(IMAGES_DIR))
-    {
-        fs::create_directories(IMAGES_DIR);
     }
 
     // check the amount of fx files so we don't do extra work

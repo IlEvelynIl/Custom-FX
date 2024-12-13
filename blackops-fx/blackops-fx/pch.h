@@ -14,6 +14,7 @@
 #define LINKER_DIR "custom_fx\\linker"
 #define LINKER_RAW "custom_fx\\linker\\raw"
 #define ZONE_SOURCE_DIR "custom_fx\\linker\\zone_source"
+#define FX_MOD_DIR "custom_fx\\linker\\mods\\custom_fx"
 
 #include <windows.h>
 #include <filesystem>

@@ -89,16 +89,6 @@ namespace linker {
             }
         }
 
-        if (fs::exists(fx_files_dir + "/images"))
-        {
-            try {
-                fs::copy(fx_files_dir + "/images", "custom_fx/linker/raw/images", fs::copy_options::recursive | fs::copy_options::overwrite_existing);
-            }
-            catch (std::exception& e) {
-                std::thread{ debug::Log, "Failed to copy images folder" }.detach();
-            }
-        }
-
         // "custom_fx/linker/bin/launcher_ldr.exe" "custom_fx/linker/bin/linker_pc.dll" "custom_fx/linker/bin/linker_pc.exe" -nopause -language english -moddir custom_fx mod
         std::string cmd = "\"custom_fx/linker/bin/launcher_ldr.exe\" \"custom_fx/linker/bin/linker_pc.dll\" \"custom_fx/linker/bin/linker_pc.exe\" -nopause -language english -moddir custom_fx mod";
         return process::LaunchProcess(cmd);
