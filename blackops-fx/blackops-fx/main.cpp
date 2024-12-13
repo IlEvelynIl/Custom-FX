@@ -7,15 +7,8 @@
 
 namespace fs = std::filesystem;
 
-void CustomFX_Init(int game)
+BOOL CustomFX_Init()
 {
-    // Make sure we're on BlackOps.exe and not BlackOpsMP.exe
-    if (game != 1)
-    {
-        MessageBoxA(NULL, "Custom-FX only works on SP/ZM.", "Custom-FX", MB_OK);
-        return;
-    }
-
     // remove old custom-fx.log
     if (fs::exists(FX_LOGFILE))
     {
@@ -32,14 +25,14 @@ void CustomFX_Init(int game)
     if (!fs::exists(CUSTOM_FX_DIR))
     {
         std::thread{ debug::Log, "\"custom_fx\" doesnt exist, aborting." }.detach();
-        return;
+        return TRUE;
     }
 
     // if raw doesnt exist we can't compile the fx files
     if (!fs::exists(LINKER_RAW))
     {
         std::thread{ debug::Log, "\"raw\" doesnt exist, aborting." }.detach();
-        return;
+        return TRUE;
     }
 
     if (!fs::exists(FX_FILES_DIR))
@@ -63,39 +56,43 @@ void CustomFX_Init(int game)
     std::thread{ debug::Log, amountMsg.c_str() }.detach();
     if (amount_of_fx == 0)
     {
-        return;
+        return TRUE;
     }
 
     if (!linker::PrepModCSV())
     {
         std::thread{ debug::Log, "An error occurred with linking custom fx (1)" }.detach();
-        return;
+        return FALSE;
     }
 
     if (!linker::LinkCustomFX())
     {
         std::thread{ debug::Log, "An error occurred with linking custom fx (2)" }.detach();
-        return;
+        return FALSE;
     }
     std::thread{ debug::Log, "Linked custom fx" }.detach();
 
-    linker::MoveCustomFXFastFile();
-    std::thread{ debug::Log, "Moved custom fx to zone/Common" }.detach();
-
-    linker::custom_fx_hash = fx::hashFxFile();
-
+    linker::custom_fx_hash = fx::hashFxFile("custom_fx\\linker\\zone\\english\\mod.ff");
     if (linker::custom_fx_hash == "") {
         std::thread{ debug::Log, "custom_fx.ff didnt exist" }.detach();
-        return;
+        return FALSE;
     }
-    std::thread{ debug::Log, "Hashed custom fx" }.detach();
+    std::thread{ debug::Log, "custom_fx.ff hash: " + linker::custom_fx_hash }.detach();
+
+    linker::MoveCustomFXFastFile();
+    std::thread{ debug::Log, "Moved custom fx to zone/Common" }.detach();
     
     // patch the bo1 memory and make it load custom_fx.ff but only if it's size in bytes matches the previously stored size.
     Detours::X86::DetourFunction((uintptr_t)0x004C8890, (uintptr_t)&common::Com_LoadLevelFastFiles);
+
+    return TRUE;
 }
 
-// entry point for the dll
-extern "C" __declspec(dllexport) int Patchbgt5external(int game) {
-    CustomFX_Init(game);
-    return 1;
+BOOL WINAPI DllMain(HINSTANCE module, DWORD reason, LPVOID reserved)
+{
+    if (reason == DLL_PROCESS_ATTACH)
+    {
+        return CustomFX_Init();
+    }
+    return TRUE;
 }

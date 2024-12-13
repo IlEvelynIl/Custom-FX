@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{751a1fa1-90ba-4b28-8b7c-c6b6eab5521b}</ProjectGuid>
-    <RootNamespace>blackopsfx</RootNamespace>
+    <ProjectGuid>{40a6039d-45eb-4904-a9cd-4379bc6120f6}</ProjectGuid>
+    <RootNamespace>steamapi</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,17 +70,11 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <TargetName>bgcustom</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <TargetName>bgcustom</TargetName>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;BLACKOPSFX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;STEAMAPI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -97,13 +91,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;BLACKOPSFX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;STEAMAPI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include
-</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -111,17 +102,13 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)lib
-</AdditionalLibraryDirectories>
-      <AdditionalDependencies>detours.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <Version>1.0</Version>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;BLACKOPSFX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;STEAMAPI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -138,13 +125,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;BLACKOPSFX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;STEAMAPI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include
-</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,39 +136,47 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)lib
-</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ceg.hpp" />
-    <ClInclude Include="common.hpp" />
-    <ClInclude Include="debug.hpp" />
-    <ClInclude Include="functions.h" />
-    <ClInclude Include="fx-files.hpp" />
-    <ClInclude Include="linker.hpp" />
-    <ClInclude Include="md5.h" />
-    <ClInclude Include="memory.hpp" />
+    <ClInclude Include="hooks.hpp" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="process.hpp" />
-    <ClInclude Include="structs.h" />
+    <ClInclude Include="steamworks\isteamapps.h" />
+    <ClInclude Include="steamworks\isteamappticket.h" />
+    <ClInclude Include="steamworks\isteamclient.h" />
+    <ClInclude Include="steamworks\isteamfriends.h" />
+    <ClInclude Include="steamworks\isteamgamecoordinator.h" />
+    <ClInclude Include="steamworks\isteamgameserver.h" />
+    <ClInclude Include="steamworks\isteamgameserverstats.h" />
+    <ClInclude Include="steamworks\isteamgamestats.h" />
+    <ClInclude Include="steamworks\isteamhttp.h" />
+    <ClInclude Include="steamworks\isteammasterserverupdater.h" />
+    <ClInclude Include="steamworks\isteammatchmaking.h" />
+    <ClInclude Include="steamworks\isteamnetworking.h" />
+    <ClInclude Include="steamworks\isteamps3overlayrenderer.h" />
+    <ClInclude Include="steamworks\isteamremotestorage.h" />
+    <ClInclude Include="steamworks\isteamscreenshots.h" />
+    <ClInclude Include="steamworks\isteamuser.h" />
+    <ClInclude Include="steamworks\isteamuserstats.h" />
+    <ClInclude Include="steamworks\isteamutils.h" />
+    <ClInclude Include="steamworks\matchmakingtypes.h" />
+    <ClInclude Include="steamworks\steamclientpublic.h" />
+    <ClInclude Include="steamworks\steamencryptedappticket.h" />
+    <ClInclude Include="steamworks\steamhttpenums.h" />
+    <ClInclude Include="steamworks\steamps3params.h" />
+    <ClInclude Include="steamworks\steamtypes.h" />
+    <ClInclude Include="steamworks\steam_api.h" />
+    <ClInclude Include="steamworks\steam_gameserver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ceg.cpp" />
-    <ClCompile Include="common.cpp" />
-    <ClCompile Include="debug.cpp" />
-    <ClCompile Include="fx-files.cpp" />
-    <ClCompile Include="linker.cpp" />
+    <ClCompile Include="hooks.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="md5.cpp" />
-    <ClCompile Include="memory.cpp" />
     <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="process.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

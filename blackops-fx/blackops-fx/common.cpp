@@ -78,7 +78,7 @@ namespace common {
 		zoneInfo[zoneCount++].freeFlags = 0;
 
 		// load custom_fx.ff if its not been modified
-		std::string customFxHash = fx::hashFxFile();
+		std::string customFxHash = fx::hashFxFile("zone\\Common\\custom_fx.ff");
 		if (customFxHash == linker::custom_fx_hash)
 		{
 			Com_LoadCustomFXFastFile();

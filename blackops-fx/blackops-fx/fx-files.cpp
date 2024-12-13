@@ -24,9 +24,9 @@ namespace fx {
 		return fx_files;
 	}
 
-	std::string hashFxFile()
+	std::string hashFxFile(std::string filePath)
 	{
-		std::ifstream file("zone\\Common\\custom_fx.ff", std::ios::binary);
+		std::ifstream file(filePath, std::ios::binary);
 
 		if (!file) {
 			return "";

@@ -13,6 +13,6 @@ namespace debug {
 
 	void Msg(const char* msg)
 	{
-		MessageBoxA(NULL, msg, "blackops-fx", MB_OK);
+		MessageBoxA(NULL, msg, "Custom-FX", MB_OK);
 	}
 }
