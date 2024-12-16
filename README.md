@@ -6,15 +6,20 @@ FX files define how certain things appear in the game, such as the Thundergun am
 ## Installing
 1. Head to [Releases](https://github.com/IlEvelynIl/Custom-FX/releases) and grab the latest version's `custom-fx.zip` file.
 
-1. Navigate to your Black Ops (or BGamer) folder, rename `steam_api.dll` to `o_steam_api.dll`, it must be spelled exactly like that.
+1. Navigate to your Black Ops (or BGamer) folder, rename `steam_api.dll` to `o_steam_api.dll`.
 
 1. Extract `custom-fx.zip` into the root of your Black Ops folder.
 
-## Installing Custom FX files
-Custom fx files can be found in places such as [Reealithy's Patch Station](https://www.youtube.com/watch?v=da5s8PwkGZM).
+## Creating your own FX Camos
+You will need to install [the official Black Ops mod tools](https://github.com/Mythical-Github/black_ops_mod_tools_installer/releases/tag/v2.0.0), as this is where you'd find the FX files and the files they depend on as well. You can use the included `debug-fx.bat` to figure out which files you need, be sure you've run the game with no FX camos installed before using the debug script.
 
-Once you have found the fx files you want, simply drag them into your `custom_fx/your_fx_files` folder, and now they should appear ingame.
+- FX files must be in their original folder structure. the tool will automatically create the `custom_fx/your_fx_files/fx` folder.
+    - Do not place these in `custom_fx/linker/raw`, they're automatically copied over by the tool.
 
-- These must still be in their original folder structure, meaning `fx` would be the top one.
-- Most custom fx files will require extra files, you can place the extra files in `custom_fx/linker/raw`, and can obtain them from [the official Black Ops mod tools](https://github.com/Mythical-Github/black_ops_mod_tools_installer/releases/tag/v2.0.0). You can use `debug-fx.bat` to figure out which files you need.
-    - Because of this, fx camo packs would be ideal.
+- You'll want to put the files that your FX files depend on (from your mod tools' raw folder) in their original folder structure in `custom_fx/linker/raw`, typically they will come from these folders:
+- `raw/images`
+- `raw/materials`
+- `raw/pimp/techniques`
+- `raw/pimp/techsets`
+- `raw/shadercache_mods`
+- `raw/statemaps`
