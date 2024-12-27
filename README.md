@@ -4,7 +4,7 @@ Allows custom FX files to be loaded into BO1 without modifying base game files.
 FX files define how certain things appear in the game, such as the Thundergun ammo lights.
 
 ## Installing
-1. Head to [Releases](https://github.com/IlEvelynIl/Custom-FX/releases) and grab the latest version's `custom-fx.zip` file.
+1. Head to [Releases](https://github.com/IlEvelynIl/Custom-FX/releases/latest) and grab the latest version's `custom-fx.zip` file.
 
 1. Navigate to your Black Ops (or BGamer) folder, rename `steam_api.dll` to `o_steam_api.dll`.
 
