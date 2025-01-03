@@ -1,4 +1,4 @@
-# Technical Stuff
+# Technical Details
 The technical details on exactly how this tool works. This can be used by the community to determine of this tool should be allowed or not.
 
 1. This tool uses what is known as a DLL proxy, we proxy all of the `steam_api.dll` functions to their original ones with `o_steam_api.dll`, except when the initialize function is called, the custom fx tool will start.
